@@ -9,10 +9,25 @@ logger.setLevel("INFO")
 
 st.set_page_config(
     page_title="Home",
-    page_icon="👋",
+    page_icon="📈",
 )
 
-st.write("# Dashboard Financeiro 👋")
+st.write("# Dashboard Financeiro 📈")
+
+st.write("## Gastos do mês")
+monthly_report = requests.get(st.secrets["BASEURL"] + "/home/monthly-expenses/").json()
+monthly_report_cols = st.columns(8)
+with monthly_report_cols[0]:
+    st.write(f":red[{monthly_report['total_expenses']}]")
+
+with monthly_report_cols[7]:
+    st.write(monthly_report['total_income'])
+st.progress(monthly_report["total_percentage"])
+
+
+st.divider()
+
+st.write(f"### Balanço do saldo")
 
 # Seletor para escolher o intervalo de tempo
 time_range = st.selectbox(
@@ -46,17 +61,12 @@ def update_balance(time_range):
         balance_df.sort_index(inplace=True)
 
         # Exibe o gráfico com base no intervalo selecionado
-        st.write(f"### Saldo para o intervalo: {time_range}")
         if time_range == "week":
             st.line_chart(balance_df['value'])
         elif time_range == "month":
             st.line_chart(balance_df['value'])
         elif time_range == "year":
             st.line_chart(balance_df['value'])
-
-        # Exibe os dados detalhados em uma tabela
-        st.write("### Detalhes do Saldo:")
-        st.dataframe(balance_df.reset_index().rename(columns={'date': 'Data', 'value': 'Saldo'}))
 
 # Chama a função para atualizar o saldo quando o seletor muda
 update_balance(time_range)
