@@ -2,6 +2,10 @@ import streamlit as st
 import requests
 import plotly.express as px
 import pandas as pd
+from utils.auth.login import check_password
+
+if not check_password():
+    st.stop()  # Do not continue if check_password is not True.
 
 # Configurar parâmetros de tipo e intervalo
 type_param = "outcome"  # ou "income" dependendo do que você quer ver

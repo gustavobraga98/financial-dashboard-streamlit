@@ -2,10 +2,15 @@ import streamlit as st
 import requests
 import pandas as pd
 from logging import getLogger, StreamHandler
+from utils.auth.login import check_password
+
 
 logger = getLogger(__name__)
 logger.addHandler(StreamHandler())
 logger.setLevel("INFO")
+
+if not check_password():
+    st.stop()  # Do not continue if check_password is not True.
 
 st.set_page_config(
     page_title="Home",
