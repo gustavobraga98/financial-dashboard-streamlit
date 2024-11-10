@@ -40,7 +40,7 @@ time_range = st.selectbox(
 def update_balance(time_range):
     with st.spinner("Carregando..."):
         # Chama a API para obter o saldo acumulado por período
-        response = requests.get(f'{st.secrets["BASEURL"]}/home/balance/?range={time_range}')
+        response = requests.get(f'{st.secrets["BASEURL"]}/home/balance_history/?range={time_range}')
         balance_data = response.json()
         # Cria um DataFrame a partir do dicionário de resposta
         balance_df = pd.DataFrame(list(balance_data.items()), columns=['date', 'value'])
