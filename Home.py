@@ -12,16 +12,21 @@ st.set_page_config(
     page_icon="📈",
 )
 
-st.write("# Dashboard Financeiro 📈")
+st.write("# Home 📈")
+
+balance_now = st.columns(6)
+
+with balance_now[5]:
+    st.write(f"Saldo Total:\n :blue[{requests.get(st.secrets['BASEURL'] + '/home/balance/').json()['latest_balance']}]")
 
 st.write("## Gastos do mês")
 monthly_report = requests.get(st.secrets["BASEURL"] + "/home/monthly-expenses/").json()
 monthly_report_cols = st.columns(8)
 with monthly_report_cols[0]:
-    st.write(f":red[{monthly_report['total_expenses']}]")
+    st.write(f":red[{round(monthly_report['total_expenses'],2)}]")
 
 with monthly_report_cols[7]:
-    st.write(monthly_report['total_income'])
+    st.write(round(monthly_report['total_income'],2))
 st.progress(monthly_report["total_percentage"])
 
 
